@@ -1,0 +1,113 @@
+{
+  "nbformat": 4,
+  "nbformat_minor": 0,
+  "metadata": {
+    "colab": {
+      "name": "Copy of Untitled0.ipynb",
+      "provenance": [],
+      "include_colab_link": true
+    },
+    "kernelspec": {
+      "name": "python3",
+      "display_name": "Python 3"
+    }
+  },
+  "cells": [
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "view-in-github",
+        "colab_type": "text"
+      },
+      "source": [
+        "<a href=\"https://colab.research.google.com/github/inobedana27/numerical-method/blob/main/secant\" target=\"_parent\"><img src=\"https://colab.research.google.com/assets/colab-badge.svg\" alt=\"Open In Colab\"/></a>"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "3LhpI6K5K2KU"
+      },
+      "source": [
+        "import numpy as np\r\n",
+        "import matplotlib.pyplot as plt"
+      ],
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "5vrW_H2RK1UI",
+        "outputId": "ff8d8742-692b-4199-ff75-007f2661f657"
+      },
+      "source": [
+        "def secant(funct,intval,n_roots,rnd_off = 3,bilim=100,tol=1.0e-06):\r\n",
+        "    end_secant = []\r\n",
+        "    roots = [] \r\n",
+        "    if len(intval) != 2 or intval [0] >= intval [1]:\r\n",
+        "        return \"Something Wrong With The Input Interval\"\r\n",
+        "    for loop in range(intval[1]-intval[0]):\r\n",
+        "        i1, i2 = intval[0], intval[1]\r\n",
+        "        y1, y2 = funct(i1), funct(i2)\r\n",
+        "        if np.sign(y1) == np.sign(y2):\r\n",
+        "            pass\r\n",
+        "        else:\r\n",
+        "            for secant in range(bilim):\r\n",
+        "                midp = (i1*y2 - i2*y1)/(y2 - y1)\r\n",
+        "                ymid = funct(midp)\r\n",
+        "                y1 = funct(i1)\r\n",
+        "                if np.allclose(0,y1, atol=tol):\r\n",
+        "                    roots.append(round(i1,rnd_off)) \r\n",
+        "                    end_secant.append(secant)\r\n",
+        "                    break\r\n",
+        "                elif np.sign(y1) != np.sign(ymid):\r\n",
+        "                    i2 = midp\r\n",
+        "                else:\r\n",
+        "                    i1 = midp\r\n",
+        "\r\n",
+        "        if len(roots) == n_roots:\r\n",
+        "            return list(set(roots)), list(set(end_secant))\r\n",
+        "        else:\r\n",
+        "            intval[1], intval[0] = intval[1], intval[0]+1\r\n",
+        "        \r\n",
+        "    if len(roots) < bilim-1:\r\n",
+        "        return list(set(roots)), list(set(end_secant))\r\n",
+        "\r\n",
+        "\r\n",
+        "#### Test ####\r\n",
+        "def f(x):\r\n",
+        "  return  np.sin(2*x)-np.cos(2*x)\r\n",
+        " \r\n",
+        "def g(x):\r\n",
+        "  return x**2+x-2\r\n",
+        "\r\n",
+        "print(secant(g,[-5,5],2))"
+      ],
+      "execution_count": null,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "text": [
+            "([1, -2], [0])\n"
+          ],
+          "name": "stdout"
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "XeDPAXCNLqGh"
+      },
+      "source": [
+        ""
+      ],
+      "execution_count": null,
+      "outputs": []
+    }
+  ]
+}
